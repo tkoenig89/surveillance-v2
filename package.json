@@ -1,0 +1,19 @@
+{
+  "name": "surveillance-v2",
+  "version": "0.5.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "raspberry",
+    "pi"
+  ],
+  "author": "tobias koenig",
+  "license": "ISC",
+  "dependencies": {
+    "typings": "^1.4.0",
+    "ws": "^1.1.1"
+  }
+}
