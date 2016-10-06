@@ -13,6 +13,7 @@
   "author": "tobias koenig",
   "license": "ISC",
   "dependencies": {
+    "mqtt": "^2.0.1",
     "typings": "^1.4.0",
     "ws": "^1.1.1"
   }

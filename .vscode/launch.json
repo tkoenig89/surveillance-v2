@@ -5,7 +5,7 @@
             "name": "Starten",
             "type": "node",
             "request": "launch",
-            "program": "${workspaceRoot}/server/server.js",
+            "program": "${workspaceRoot}/server/mqttSubscriber.js",
             "stopOnEntry": false,
             "args": [],
             "cwd": "${workspaceRoot}",
