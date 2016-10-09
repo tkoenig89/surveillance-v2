@@ -1,12 +1,14 @@
 var mqtt = require("mqtt");
 var fs = require("fs");
+var config = require("../core/config").load();
 var clientId = "kamera1";
-var imgPath = "C:\\Users\\Public\\Pictures\\Sample Pictures\\Hydrangeas.jpg";
-var brokerAddress = "mqtt://raspitest:1337";
 var topic = "stall/bilder/" + clientId;
-var client = mqtt.connect(brokerAddress, {
+
+var client = mqtt.connect(config.broker.address, {
     clientId: clientId,
-    username: "stalluser"
+    username: config.broker.username || null,
+    password: config.broker.username || null,
+    clean: false
 });
 
 client.on("connect", function (connack) {
@@ -15,7 +17,7 @@ client.on("connect", function (connack) {
 });
 
 function getLatestImage() {
-    fs.readFile(imgPath, handleFileContent);
+    fs.readFile(config.client.imageLocation, handleFileContent);
 }
 
 function handleFileContent(err, content) {

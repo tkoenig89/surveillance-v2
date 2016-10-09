@@ -1,5 +1,14 @@
 {
+    "broker": {
+        "address": "mqtt://server:port",
+        "username": "username",
+        "password": ""
+    },
+    "client": {
+        "imageLocation": "/images"
+    },
     "server": {
+        "imageLocation":"",
         "url": "localhost",
         "port": 8080,
         "archiveImages": true,
@@ -10,19 +19,5 @@
         "TOKEN_HEADER": "security-token",
         "TOKEN_TIMEOUT": 60,
         "TOKEN_ALGORITHM": "HS512"
-    },
-    "client": {
-        "NAME": "Kamera 1",
-        "TIME_BETWEEN_PINGS": 30,
-        "CLIENT_IMG_FOLDER": "/imgs",
-        "CLIENT_IMG_FILENAME": "now.jpg",
-        "CLIENT_USE_PRJFOLDER": true
-    },
-    "PERMISSIONS": {
-        "ACCESS_CAMERA": "Admin,View",
-        "ACCESS_ARCHIVE": "Admin"
-    },
-    "LOGGER": {        
-        "LOG_MODE": 2
     }
 }
