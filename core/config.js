@@ -7,7 +7,7 @@ var config = null;
  */
 function load(file) {
     if (!config) {
-        file = file || __dirname + "\\..\\config.json";
+        file = file || __dirname + "/../config.json";
         config = getConfigFromFile(file, "UTF-8")
     }
     return config;
