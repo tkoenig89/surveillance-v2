@@ -7,7 +7,7 @@ var clientId = process.argv[2] || config.client.identifier;
 var client = mqtt.connect(config.broker.address, {
     clientId: clientId,
     username: config.broker.username || null,
-    password: config.broker.username || null,
+    password: config.broker.password || null,
     clean: false
 });
 

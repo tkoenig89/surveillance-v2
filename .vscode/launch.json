@@ -5,6 +5,7 @@
             "name": "Starten",
             "type": "node",
             "request": "launch",
+            // "program": "${workspaceRoot}/camclient/client.js",
             "program": "${workspaceRoot}/server/mqttSubscriber.js",
             "stopOnEntry": false,
             "args": [],

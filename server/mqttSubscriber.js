@@ -3,13 +3,12 @@ var fs = require("fs");
 var config = require("../core/config").load();
 var clientId = "server";
 var imgPath = config.server.imageLocation;
-var topic = "stall/bilder/#";
 
 var client = mqtt.connect(config.broker.address, {
     clientId: clientId,
     username: config.broker.username || null,
-    password: config.broker.username || null,
-    clean: false
+    password: config.broker.password || null,
+    clean: true
 });
 
 client.on("connect", function (connack) {
@@ -17,9 +16,7 @@ client.on("connect", function (connack) {
     if (connack.sessionPresent) {
         console.log("using existing session");
     } else {
-        client.subscribe(topic, {
-            qos: 2
-        });
+        client.subscribe(config.broker.topic + "/#", { qos: 2 });
     }
 });
 
@@ -28,6 +25,11 @@ client.on("message", function (topic, messageBuffer) {
 
     storeImage(data);
 });
+
+client.on("error", function (topic, messageBuffer) {
+    console.log(topic, message);
+});
+
 
 function parseMessage(messageBuffer) {
     var str = messageBuffer.toString("utf-8");
@@ -40,11 +42,10 @@ function parseMessage(messageBuffer) {
 
 function storeImage(data) {
     var date = new Date(data.time);
-    var fileName = date.getHours() + "_" + date.getMinutes() + "_" + date.getSeconds() + ".jpg";
-    console.log(fileName);
-
+    var fileName = date.getHours() + "_" + date.getMinutes() + "_" + date.getSeconds() + "." + data.ext;
 
     var targetPath = prepareImageLocation(config.server.imageLocation, fileName);
+    console.log(targetPath);
     fs.writeFile(targetPath, data.buffer);
 }
 
@@ -59,3 +60,7 @@ function prepareImageLocation(folder, fileName) {
         }
     }
 }
+
+String.prototype.endsWith = function(suffix) {
+    return this.indexOf(suffix, this.length - suffix.length) !== -1;
+};
