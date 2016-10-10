@@ -2,13 +2,15 @@
     "broker": {
         "address": "mqtt://server:port",
         "username": "username",
-        "password": ""
+        "password": "",
+        "topic": "stall/bilder/"
     },
     "client": {
-        "imageLocation": "/images"
+        "imageLocation": "/images",
+        "identifier": "kamera"
     },
     "server": {
-        "imageLocation":"",
+        "imageLocation": "",
         "url": "localhost",
         "port": 8080,
         "archiveImages": true,
