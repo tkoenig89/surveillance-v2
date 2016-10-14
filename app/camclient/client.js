@@ -18,6 +18,11 @@ function MqttImagePublisher(config) {
     function start() {
         initClient();
         setupEventlisteners();
+
+        //exit if there did nothing happen after 30 seconds
+        setTimeout(function () {
+            client.end();
+        }, 30000);
     }
 
     function initClient() {
