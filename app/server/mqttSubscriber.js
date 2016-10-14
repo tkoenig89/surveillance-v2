@@ -1,15 +1,18 @@
 var mqtt = require("mqtt");
 var fs = require("fs");
 var msgHandler = require("../core/imageMessage");
-var config = require("../core/config").load();
+var config = require("../core/config").load("config.json");
 var clientId = "server";
 var imgPath = config.server.imageLocation;
 
-var mqttImageSubscriber = MqttImageSubscriber(config);
+var mqttImageSubscriber = new MqttImageSubscriber(config);
 mqttImageSubscriber.start();
 
 function MqttImageSubscriber(config) {
     var client;
+
+    this.start = start;
+
     function start() {
         initClient();
         setupEventlisteners();
