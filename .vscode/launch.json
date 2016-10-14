@@ -6,7 +6,7 @@
             "type": "node",
             "request": "launch",
             // "program": "${workspaceRoot}/camclient/client.js",
-            "program": "${workspaceRoot}/server/mqttSubscriber.js",
+            "program": "${workspaceRoot}/app/server/mqttSubscriber.js",
             "stopOnEntry": false,
             "args": [],
             "cwd": "${workspaceRoot}",
