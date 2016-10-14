@@ -1,6 +1,7 @@
 #!/usr/bin/node
 var mqtt = require("mqtt");
 var fs = require("fs");
+var msgHandler = require("../core/imageMessage");
 var config = require("../core/config").load();
 var clientId = process.argv[2] || config.client.identifier;
 
@@ -36,7 +37,7 @@ function handleFileContent(err, content) {
     };
     
     //merge meta and binary data
-    payload = generatePayload(metaData, content);
+    payload = msgHandler.createMessage(metaData, content);
 
     //send the data
     client.publish(config.broker.topic + "/" + clientId, payload, { qos: 2 });

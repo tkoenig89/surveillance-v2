@@ -1,21 +1,21 @@
 {
     "broker": {
-        "address": "mqtt://server:port",
-        "username": "username",
-        "password": "",
-        "topic": "stall/bilder/"
+        "address": "mqtt://xxxx:yyyy",
+        "username": "user",
+        "password": ""
     },
     "client": {
-        "imageLocation": "/images",
-        "identifier": "kamera"
+        "imageLocation": "path",
+        "identifier": "kamera",
+        "publish_topic": "stall/kamera/bilder",
+        "publish_qos": 1
     },
     "server": {
-        "imageLocation": "",
-        "url": "localhost",
-        "port": 8080,
-        "archiveImages": true,
-        "archiveFolder": "/home/pi/archive",
-        "maxFilesInArchive": 20
+        "imageLocation": "path",
+        "subscribe_topic": "stall/+/bilder",
+        "subscribe_qos": 2,
+        "identifier": "imageServer",
+        "clean_session": true
     },
     "authentication": {
         "TOKEN_HEADER": "security-token",
