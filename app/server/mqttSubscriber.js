@@ -1,13 +1,20 @@
+#!/usr/bin/node
 var mqtt = require("mqtt");
 var fs = require("fs");
 var msgHandler = require("../core/imageMessage");
-var config = require("../core/config").load("config.json");
-var clientId = "server";
-var imgPath = config.server.imageLocation;
+var configHelper = require("../core/config");
 
+//use either the first argument as configuration file or search for 'config.json' in the current folder
+var config = configHelper.load(process.argv[2] || "config.json");
+
+//init and start subscriber
 var mqttImageSubscriber = new MqttImageSubscriber(config);
 mqttImageSubscriber.start();
 
+/**
+ * This 
+ * @param {Object} config
+ */
 function MqttImageSubscriber(config) {
     var client;
 
