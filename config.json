@@ -15,7 +15,8 @@
         "subscribe_topic": "stall/+/bilder",
         "subscribe_qos": 2,
         "identifier": "imageServer",
-        "clean_session": true
+        "clean_session": true,
+        "ca": null
     },
     "authentication": {
         "TOKEN_HEADER": "security-token",
