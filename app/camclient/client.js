@@ -30,7 +30,8 @@ function MqttImagePublisher(config) {
             clientId: config.client.identifier,
             username: config.broker.username || null,
             password: config.broker.password || null,
-            clean: true
+            clean: true,
+            ca: config.broker.ca ? [fs.readFileSync(config.broker.ca)] : null
         });
     }
 

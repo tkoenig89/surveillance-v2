@@ -30,7 +30,7 @@ function MqttImageSubscriber(config) {
             username: config.broker.username || null,
             password: config.broker.password || null,
             clean: config.server.clean_session,
-            ca: config.server.ca ? [fs.readFileSync(config.server.ca)] : null
+            ca: config.broker.ca ? [fs.readFileSync(config.broker.ca)] : null
         });
     }
 

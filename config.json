@@ -2,7 +2,8 @@
     "broker": {
         "address": "mqtt://xxxx:yyyy",
         "username": "user",
-        "password": ""
+        "password": "",
+        "ca": null
     },
     "client": {
         "imageLocation": "path",
@@ -15,8 +16,7 @@
         "subscribe_topic": "stall/+/bilder",
         "subscribe_qos": 2,
         "identifier": "imageServer",
-        "clean_session": true,
-        "ca": null
+        "clean_session": true
     },
     "authentication": {
         "TOKEN_HEADER": "security-token",
