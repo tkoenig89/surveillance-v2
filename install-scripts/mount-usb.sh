@@ -18,3 +18,6 @@ sudo mount -o uid=pi,gid=pi /dev/sda1 /mnt/usb
 #UUID=XXXX-XXXX  /mnt/usb vfat   nofail,uid=pi,gid=pi   0   0
 #oder:
 #UUID=XXXX-XXXX /mnt/usb vfat utf8,uid=pi,gid=pi,noatime 0
+
+#test mount
+#>sudo mount -a
