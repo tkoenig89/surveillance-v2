@@ -23,5 +23,5 @@ if [ $var = 0 ]; then
 	fi
 
 	#shoot image: quality 10 seems to be the best result in quality and size
-	sudo raspistill -w 1280 -h 960 -o $BASEFOLDER/now.jpg -n -q 10 -e jpg -th none
+	sudo raspistill -w 1920 -h 1080 -o $BASEFOLDER/now.jpg -n -q 10 -e jpg -th none
 fi
