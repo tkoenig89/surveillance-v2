@@ -1,5 +1,6 @@
 {
     "broker": {
+        "hostname":"hostname",
         "address": "mqtt://xxxx:yyyy",
         "username": "user",
         "password": "",

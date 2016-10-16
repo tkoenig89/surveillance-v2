@@ -30,8 +30,25 @@ function MqttImageSubscriber(config) {
             username: config.broker.username || null,
             password: config.broker.password || null,
             clean: config.server.clean_session,
-            ca: config.broker.ca ? [fs.readFileSync(config.broker.ca)] : null
+            ca: config.broker.ca ? [fs.readFileSync(config.broker.ca)] : null,
+            checkServerIdentity: checkServerIdentityOverwrite
         });
+    }
+
+    /**
+     * This will check that the connection is opened to a valid host.
+     * If passing returns undefined, in all other cases it should return an error.
+     * See here for more info: https://github.com/nodejs/node-v0.x-archive/commit/bf5e2f246eff55dfc33318f0ffb4572a56f7645a
+     * @param {string} host
+     * @param {Object} cer
+     * @returns {Error}
+     */
+    function checkServerIdentityOverwrite(host, cer) {
+        if (host === config.broker.hostname) {
+            return undefined;
+        } else {
+            return Error("unknown host: " + host);
+        };
     }
 
     function setupEventlisteners() {
@@ -52,7 +69,7 @@ function MqttImageSubscriber(config) {
     }
 
     function onError(err) {
-
+        
     }
 
     /**
