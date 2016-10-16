@@ -5,23 +5,16 @@ BASEFOLDER=$1
 HISTORYFOLDER=$BASEFOLDER/history
 FOLDER="$HISTORYFOLDER/$(date +%d%m%y)"
 
-#define in which hours of the day there should no image be shot
-NO_IMG_HOURS=";23;24;0;1;2;3;"
-
-#check if its a hour where no image should be shot
-var="$(expr match "$NO_IMG_HOURS" ".*;$(date +"%H");")";
-if [ $var = 0 ]; then
-
-	#create folder if it doesn't exist
-	if ! test -d $FOLDER ; then
-		sudo mkdir $FOLDER 
-	fi
-
-	#archive old image
-	if test -f $BASEFOLDER/now.jpg ; then
-		sudo cp $BASEFOLDER/now.jpg $FOLDER/img$(date +%H%M%S).jpg
-	fi
-
-	#shoot image: quality 10 seems to be the best result in quality and size
-	sudo raspistill -w 1920 -h 1080 -o $BASEFOLDER/now.jpg -n -q 10 -e jpg -th none
+#create folder if it doesn't exist
+if ! test -d $FOLDER ; then
+	sudo mkdir $FOLDER 
 fi
+
+#archive old image
+if test -f $BASEFOLDER/now.jpg ; then
+	sudo cp $BASEFOLDER/now.jpg $FOLDER/img$(date +%H%M%S).jpg
+fi
+
+#shoot image: quality 10 seems to be the best result in quality and size
+sudo raspistill -w 1280 -h 960 -o $BASEFOLDER/now.jpg -n -q 9 -e jpg -th none
+gm convert -colorspace GRAY $BASEFOLDER/now.jpg $BASEFOLDER/now_sw.jpg

@@ -69,7 +69,7 @@ function MqttImageSubscriber(config) {
     }
 
     function onError(err) {
-        
+
     }
 
     /**
@@ -78,10 +78,14 @@ function MqttImageSubscriber(config) {
      */
     function storeImage(data) {
         var date = new Date(data.time);
-        var fileName = date.getHours() + "_" + date.getMinutes() + "_" + date.getSeconds() + "." + data.ext;
-
-        var targetPath = concatFilepath(config.server.imageLocation, fileName);
-        fs.writeFile(targetPath, data.buffer);
+        var fileName = padNumber(date.getHours()) + "_" + padNumber(date.getMinutes()) + "_" + padNumber(date.getSeconds()) + "." + data.ext;
+        var folderName = "" + date.getFullYear() + padNumber(date.getMonth() + 1) + padNumber(date.getDate());
+        var targetFolderPath = concatFilepath(config.server.imageLocation, folderName);
+        var targetFilePath = concatFilepath(targetFolderPath, fileName);
+        if (!fs.existsSync(targetFolderPath)) {
+            fs.mkdirSync(targetFolderPath);
+        }
+        fs.writeFile(targetFilePath, data.buffer);
     }
 
     function concatFilepath(folder, fileName) {
@@ -94,6 +98,14 @@ function MqttImageSubscriber(config) {
                 return folder + "/" + fileName;
             }
         }
+    }
+}
+
+function padNumber(nmbr) {
+    if (nmbr < 10) {
+        return "0" + nmbr;
+    } else {
+        return "" + nmbr;
     }
 }
 

@@ -9,3 +9,6 @@ mkdir $IMAGE_BASEFOLDER/history
 #make scripts executable
 sudo chmod +x $PROJECT_FOLDER/install-scripts/*
 sudo chmod +x $CLIENT_FOLDER/*
+
+#install graphicsmagick
+sudo apt-get install graphicsmagick
