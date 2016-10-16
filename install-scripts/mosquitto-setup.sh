@@ -70,5 +70,8 @@ sudo -u mosquitto bash -c "echo \"keyfile $MOSQUITTO_FOLDER/certs/$HOST_KEY\" >>
 #finally add a cronjob to start the mosquitto server at boot
 sudo -u mosquitto bash -c "(crontab -l 2>/dev/null; echo \"@reboot mosquitto -c $MOSQUITTO_FOLDER/mosquitto.conf\") | crontab -"
 
+#update libraries
+/sbin/ldconfig
+
 #run mosquitto
 #>sudo -u mosquitto mosquitto -c /mnt/usb/mosquitto/mosquitto.conf
