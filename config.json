@@ -19,9 +19,7 @@
         "identifier": "imageServer",
         "clean_session": true
     },
-    "authentication": {
-        "TOKEN_HEADER": "security-token",
-        "TOKEN_TIMEOUT": 60,
-        "TOKEN_ALGORITHM": "HS512"
+    "maintenance": {
+        "cron_topic": "stall/kamera/cron"
     }
 }
