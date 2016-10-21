@@ -21,7 +21,7 @@ function MqttImagePublisher(config) {
 
         //exit if there did nothing happen after 30 seconds
         setTimeout(function () {
-            client.end();
+            closeProcess();
         }, 30000);
     }
 
@@ -84,7 +84,7 @@ function MqttImagePublisher(config) {
         client.publish(config.client.publish_topic, payload, { qos: config.client.publish_qos });
 
         //finally close the connection
-        client.end();
+        closeProcess();
     }
 
     /**
@@ -107,5 +107,12 @@ function MqttImagePublisher(config) {
         var metaStr = JSON.stringify(metaData);
 
         return metaStr + ";#" + bufferStr;
+    }
+
+    function closeProcess() {
+        client.end();
+        setTimeout(function () {
+            process.exit();
+        }, 1000);
     }
 }

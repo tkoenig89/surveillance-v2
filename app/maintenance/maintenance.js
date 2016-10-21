@@ -1,5 +1,6 @@
 #!/usr/bin/node
 var mqtt = require("mqtt");
+var fs = require("fs");
 var configHelper = require("../core/config");
 var cronWrapper = require("../core/cronwrapper");
 
@@ -26,7 +27,7 @@ function MaintenanceClient(config) {
 
     function initClient() {
         client = mqtt.connect(config.broker.address, {
-            clientId: config.client.identifier,
+            clientId: config.client.identifier + "_m",
             username: config.broker.username || null,
             password: config.broker.password || null,
             clean: true,

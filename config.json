@@ -22,7 +22,7 @@
     "maintenance": {
         "cron_topic": "stall/kamera/cron",
         "script_folder": "",
-        "image_archive_folder": "",
+        "image_base_folder": "",
         "cleanup_interval_minutes": 4000,
         "path_to_node": "node",
         "path_to_config": "config.json",
