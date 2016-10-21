@@ -1,0 +1,14 @@
+[
+    {
+        "cmd": "IMAGE",
+        "schedule": "*/15 * * * * *"
+    },
+    {
+        "cmd": "CLEANUP",
+        "schedule": "1 */3 * * *"
+    },
+    {
+        "cmd": "UPLOAD",
+        "schedule": "*/5 * * * *"
+    }
+]

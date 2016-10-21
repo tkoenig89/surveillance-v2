@@ -23,7 +23,9 @@
         "cron_topic": "stall/kamera/cron",
         "script_folder": "",
         "image_archive_folder": "",
-        "path_to_node": "",
-        "path_to_config": ""
+        "cleanup_interval_minutes": 4000,
+        "path_to_node": "node",
+        "path_to_config": "config.json",
+        "cron_conf_file":"cronconf.json"
     }
 }

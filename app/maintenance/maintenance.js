@@ -1,13 +1,14 @@
 #!/usr/bin/node
 var mqtt = require("mqtt");
 var configHelper = require("../core/config");
+var cronWrapper = require("../core/cronwrapper");
 
 //use either the first argument as configuration file or search for 'config.json' in the current folder
 var config = configHelper.load(process.argv[2] || "config.json");
 
 //init and start publisher
-var mqttImagePublisher = new MaintenanceClient(config);
-mqttImagePublisher.start();
+var maintenanceClient = new MaintenanceClient(config);
+maintenanceClient.start();
 
 function MaintenanceClient(config) {
     var client;
@@ -66,6 +67,42 @@ function MaintenanceClient(config) {
     }
 
     function updateCronJobs(strMessage) {
+        try {
+            var cronConfig = JSON.parse(strMessage);
+            if (cronConfig && cronConfig.length > 0) {
+                var compareResult = compareConfiguration(cronConfig);
+                if (compareResult.hasChanged) {
+                    cronWrapper.update(compareResult.config, function (err) {
+                        if (!err) {
+                            fs.writeFileSync(config.maintenance.cron_conf_file, JSON.stringify(compareResult.config), "utf8");
+                        }
+                    });
+                }
+            }
+        } catch (ex) {
 
+        }
+    }
+
+    function compareConfiguration(cronConfig) {
+        var hasChanged = false;
+        var fContent = fs.readFileSync(config.maintenance.cron_conf_file, "utf8");
+        var oldConfig = JSON.parse(fContent);
+
+        for (var i = 0; i < cronConfig.length; i++) {
+            for (var j = 0; j < oldConfig.length; j++) {
+                if (cronConfig[i].cmd === oldConfig[j].cmd) {
+                    if (cronConfig[i].schedule !== oldConfig[j].schedule) {
+                        hasChanged = true;
+                        oldConfig[j].schedule = cronConfig[i].schedule;
+                    }
+                }
+            }
+        }
+
+        return {
+            hasChanged: hasChanged,
+            config: oldConfig
+        };
     }
 }
