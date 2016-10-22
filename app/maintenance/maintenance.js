@@ -77,7 +77,10 @@ function MaintenanceClient(config) {
                         if (!err) {
                             fs.writeFileSync(config.maintenance.cron_conf_file, JSON.stringify(compareResult.config), "utf8");
                         }
+                        process.exit();
                     });
+                }else{
+                    process.exit();
                 }
             }
         } catch (ex) {
@@ -96,10 +99,6 @@ function MaintenanceClient(config) {
                     if (cronConfig[i].schedule !== oldConfig[j].schedule) {
                         hasChanged = true;
                         oldConfig[j].schedule = cronConfig[i].schedule;
-                    }
-                    if (oldConfig[j].data && cronConfig[i].data !== oldConfig[j].data) {
-                        hasChanged = true;
-                        oldConfig[j].data = cronConfig[i].data;
                     }
                 }
             }

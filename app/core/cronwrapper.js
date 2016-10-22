@@ -10,7 +10,7 @@ var config = configHelper.load(process.argv[2] || "config.json");
 //predefined commands, so no one can add arbitrary commands to the crontab
 var allowedCronCommands = {
     IMAGE: ["pi", config.maintenance.script_folder + "/shootImage.sh " + config.maintenance.image_base_folder],
-    CLEANUP: ["pi", config.maintenance.script_folder + "/cleanupImageFolder.sh " + config.maintenance.image_base_folder + "/history $DATA"],
+    CLEANUP: ["pi", config.maintenance.script_folder + "/cleanupImageFolder.sh " + config.maintenance.image_base_folder + "/history " + config.maintenance.cleanup_interval_minutes],
     UPLOAD: ["pi", config.maintenance.path_to_node + " " + config.maintenance.script_folder + "/client.js " + config.maintenance.path_to_config]
 };
 
@@ -24,8 +24,7 @@ function update(cronConfiguration, callback, addIfMissing) {
 
         //update cron jobs
         for (var i = 0; i < cronConfiguration.length; i++) {
-            var cronConf = cronConfiguration[i];
-            parseConfig(cronConf, cronStorage, addIfMissing);
+            parseConfig(cronConfiguration[i], cronStorage, addIfMissing);
         }
 
         //write to file
@@ -37,11 +36,6 @@ function update(cronConfiguration, callback, addIfMissing) {
 function parseConfig(cronConf, cronStorage, addIfMissing) {
     var command = allowedCronCommands[cronConf.cmd][1];
     var user = allowedCronCommands[cronConf.cmd][0];
-
-    if (cronConf.cmd === "CLEANUP") {
-        var minutes = cronConf.data || config.maintenance.cleanup_interval_minutes;
-        command = command.replace("$DATA", minutes);
-    }
 
     cronStorage.updateCron(command, user, cronConf.schedule, addIfMissing);
 }
