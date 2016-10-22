@@ -9,9 +9,10 @@ var config = configHelper.load(process.argv[2] || "config.json");
 
 //predefined commands, so no one can add arbitrary commands to the crontab
 var allowedCronCommands = {
-    IMAGE: ["pi", config.maintenance.script_folder + "/shootImage.sh " + config.maintenance.image_base_folder],
-    CLEANUP: ["pi", config.maintenance.script_folder + "/cleanupImageFolder.sh " + config.maintenance.image_base_folder + "/history " + config.maintenance.cleanup_interval_minutes],
-    UPLOAD: ["pi", config.maintenance.path_to_node + " " + config.maintenance.script_folder + "/client.js " + config.maintenance.path_to_config]
+    IMAGE: ["pi", config.maintenance.script_folder + "/camclient/shootImage.sh " + config.maintenance.image_base_folder],
+    CLEANUP: ["pi", config.maintenance.script_folder + "/camclient/cleanupImageFolder.sh " + config.maintenance.image_base_folder + "/history " + config.maintenance.cleanup_interval_minutes],
+    UPLOAD: ["pi", config.maintenance.path_to_node + " " + config.maintenance.script_folder + "/camclient/client.js " + config.maintenance.path_to_config],
+    MAINTENANCE: ["root", config.maintenance.path_to_node + " " + config.maintenance.script_folder + "/maintenance/maintenance.js " + config.maintenance.path_to_config]
 };
 
 module.exports = {

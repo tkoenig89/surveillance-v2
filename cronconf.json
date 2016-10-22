@@ -10,5 +10,8 @@
     {
         "cmd": "UPLOAD",
         "schedule": "*/5 * * * *"
-    }
+    },{
+        "cmd": "MAINTENANCE",
+        "schedule": "5 * * * *"
+    }    
 ]
