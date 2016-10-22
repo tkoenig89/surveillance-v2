@@ -63,11 +63,16 @@ function MqttPublisher(config) {
     }
 
     function onConnect(connack) {
-        client.publish(config.maintenance.cron_topic, JSON.stringify(
-            [{
-                cmd: "IMAGE", schedule: "5 * * * * *"
-            }]
-        ));
+        var msg = createUpdateMessage();
+        client.publish(config.maintenance.cron_topic, msg, { retain: true });
         setTimeout(closeProcess, 10000);
+    }
+
+    function createUpdateMessage() {
+        return JSON.stringify(
+            [{
+                cmd: "CLEANUP", schedule: "1 */3 * * *", data: 5000
+            }]
+        );
     }
 }

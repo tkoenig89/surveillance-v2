@@ -97,6 +97,10 @@ function MaintenanceClient(config) {
                         hasChanged = true;
                         oldConfig[j].schedule = cronConfig[i].schedule;
                     }
+                    if (oldConfig[j].data && cronConfig[i].data !== oldConfig[j].data) {
+                        hasChanged = true;
+                        oldConfig[j].data = cronConfig[i].data;
+                    }
                 }
             }
         }
