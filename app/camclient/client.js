@@ -27,7 +27,7 @@ function MqttImagePublisher(config) {
 
     function initClient() {
         client = mqtt.connect(config.broker.address, {
-            clientId: config.client.identifier,
+            clientId: config.client.identifier + "_cam",
             username: config.broker.username || null,
             password: config.broker.password || null,
             clean: true,

@@ -16,5 +16,5 @@ if test -f $BASEFOLDER/now.jpg ; then
 fi
 
 #shoot image: quality 10 seems to be the best result in quality and size
-sudo raspistill -w 1280 -h 960 -o $BASEFOLDER/now.jpg -n -q 9 -e jpg -th none
-gm convert -colorspace GRAY $BASEFOLDER/now.jpg $BASEFOLDER/now_sw.jpg
+sudo raspistill -o $BASEFOLDER/now.jpg -n -q 9 -e jpg -th none
+gm convert -size 1280x960 -colorspace GRAY -resize 1280x960 $BASEFOLDER/now.jpg $BASEFOLDER/now_sw.jpg

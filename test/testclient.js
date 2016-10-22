@@ -1,43 +1,34 @@
 #!/usr/bin/node
 var mqtt = require("mqtt");
 var fs = require("fs");
-var configHelper = require("../core/config");
+var configHelper = require("../app/core/config");
 
 //use either the first argument as configuration file or search for 'config.json' in the current folder
 var config = configHelper.load(process.argv[2] || "config.json");
 
-//init and start publisher
-var mqttClient = new MqttSystemStatePublisher(config);
-mqttClient.start();
+//init and start subscriber
+var mqttImageSubscriber = new MqttImageSubscriber(config);
+mqttImageSubscriber.start();
 
-function MqttSystemStatePublisher(config) {
+/**
+ * This 
+ * @param {Object} config
+ */
+function MqttImageSubscriber(config) {
     var client;
+
     this.start = start;
 
     function start() {
         initClient();
         setupEventlisteners();
-
-        //exit if there did nothing happen after 30 seconds
-        setTimeout(function () {
-            closeProcess();
-        }, 30000);
     }
-
-    function onConnect(connack) {
-        //read and send out the captured system state
-        fs.readFile(config.client.system_state_file, "utf8", function (err, content) {
-            if (err) return console.error(err);
-            client.publish("stall/" + config.client.identifier + "/status", content, { retain: true, qos: 1 });
-        });
-    }
-
     function initClient() {
         client = mqtt.connect(config.broker.address, {
-            clientId: config.client.identifier + "_state",
+            clientId: config.server.identifier + "_sniffer",
             username: config.broker.username || null,
             password: config.broker.password || null,
-            clean: true,
+            clean: config.server.clean_session,
             ca: config.broker.ca ? [fs.readFileSync(config.broker.ca)] : null,
             checkServerIdentity: checkServerIdentityOverwrite
         });
@@ -61,12 +52,29 @@ function MqttSystemStatePublisher(config) {
 
     function setupEventlisteners() {
         client.on("connect", onConnect);
+        client.on("message", onMessage);
+        client.on("error", onError);
     }
 
-    function closeProcess() {
-        client.end();
-        setTimeout(function () {
-            process.exit();
-        }, 1000);
+    function onMessage(topic, messageBuffer) {
+        console.log(topic);
+        if (topic.indexOf("bilder") === -1) {
+            console.log(messageBuffer.toString());
+        }
+        console.log("----------------------------------------------------------------------");
+    }
+
+    function onConnect(connack) {
+        if (!connack.sessionPresent) {
+            addSubscibtions();
+        }
+    }
+
+    function addSubscibtions() {
+        client.subscribe("stall/#");
+    }
+
+    function onError(err) {
+
     }
 }
