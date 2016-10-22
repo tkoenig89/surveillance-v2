@@ -1,6 +1,6 @@
 {
     "broker": {
-        "hostname":"hostname",
+        "hostname": "hostname",
         "address": "mqtt://xxxx:yyyy",
         "username": "user",
         "password": "",
@@ -10,7 +10,8 @@
         "imageLocation": "path",
         "identifier": "kamera",
         "publish_topic": "stall/kamera/bilder",
-        "publish_qos": 1
+        "publish_qos": "1m",
+        "system_state_file": ""
     },
     "server": {
         "imageLocation": "path",
@@ -26,6 +27,6 @@
         "cleanup_interval_minutes": 4000,
         "path_to_node": "node",
         "path_to_config": "config.json",
-        "cron_conf_file":"cronconf.json"
+        "cron_conf_file": "cronconf.json"
     }
 }
