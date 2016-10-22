@@ -12,7 +12,9 @@ var allowedCronCommands = {
     IMAGE: ["pi", config.maintenance.script_folder + "/camclient/shootImage.sh " + config.maintenance.image_base_folder],
     CLEANUP: ["pi", config.maintenance.script_folder + "/camclient/cleanupImageFolder.sh " + config.maintenance.image_base_folder + "/history " + config.maintenance.cleanup_interval_minutes],
     UPLOAD: ["pi", config.maintenance.path_to_node + " " + config.maintenance.script_folder + "/camclient/client.js " + config.maintenance.path_to_config],
-    MAINTENANCE: ["root", config.maintenance.path_to_node + " " + config.maintenance.script_folder + "/maintenance/maintenance.js " + config.maintenance.path_to_config]
+    MAINTENANCE: ["root", config.maintenance.path_to_node + " " + config.maintenance.script_folder + "/maintenance/maintenance.js " + config.maintenance.path_to_config],
+    STATE_CAPTURE: ["pi", config.maintenance.script_folder + "/camclient/systemStats.sh"],
+    STATE_UPLOAD: ["pi", config.maintenance.path_to_node + " " + config.maintenance.script_folder + "/camclient/systemStateProvider.js " + config.maintenance.path_to_config]
 };
 
 module.exports = {
