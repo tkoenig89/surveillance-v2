@@ -64,15 +64,28 @@ function MqttPublisher(config) {
 
     function onConnect(connack) {
         var msg = createUpdateMessage();
+        console.log(msg);
         client.publish(config.maintenance.cron_topic, msg, { retain: true });
-        setTimeout(closeProcess, 10000);
+        setTimeout(closeProcess, 1000);
     }
 
     function createUpdateMessage() {
         return JSON.stringify(
-            [{
-                cmd: "CLEANUP", schedule: "1 */3 * * *", data: 5000
-            }]
+            [
+                {
+                    cmd: "UPLOAD",
+                    schedule: "*/10 * * * *"
+                }, {
+                    cmd: "MAINTENANCE",
+                    schedule: "*/15 * * * *"
+                },{
+                    cmd: "STATE_UPLOAD",
+                    schedule: "3 * * * *"
+                },{
+                    cmd: "STATE_CAPTURE",
+                    schedule: "1 * * * *"
+                }
+            ]
         );
     }
 }
