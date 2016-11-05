@@ -59,6 +59,8 @@ function MqttImageSubscriber(config) {
 
     function onMessage(topic, messageBuffer) {
         var data = msgHandler.parseMessage(messageBuffer);
+        var topicSplit = topic.split("/");
+        data.cameraName = topicSplit[topicSplit.length - 1];
         storeImage(data);
     }
 
@@ -74,18 +76,36 @@ function MqttImageSubscriber(config) {
 
     /**
      * 
-     * @param {{buffer:Buffer, time: string, ext:string}} data
+     * @param {{buffer:Buffer, time: string, ext:string, cameraName: string}} data
      */
     function storeImage(data) {
         var date = new Date(data.time);
-        var fileName = padNumber(date.getHours()) + "_" + padNumber(date.getMinutes()) + "_" + padNumber(date.getSeconds()) + "." + data.ext;
+
+        //create camera directory path 
+        var cameraFolderPath = ensureFolderPath(config.server.imageLocation, data.cameraName);
+
+        //create date folder path
         var folderName = "" + date.getFullYear() + padNumber(date.getMonth() + 1) + padNumber(date.getDate());
-        var targetFolderPath = concatFilepath(config.server.imageLocation, folderName);
+        var targetFolderPath = ensureFolderPath(cameraFolderPath, folderName);
+
+        //create file path
+        var fileName = padNumber(date.getHours()) + "_" + padNumber(date.getMinutes()) + "_" + padNumber(date.getSeconds()) + "." + data.ext;
         var targetFilePath = concatFilepath(targetFolderPath, fileName);
-        if (!fs.existsSync(targetFolderPath)) {
-            fs.mkdirSync(targetFolderPath);
-        }
         fs.writeFile(targetFilePath, data.buffer);
+    }
+
+    /**
+     * Concatenates the given paths and creates the folder if not already existing
+     * @param {string} parentFolderPath
+     * @param {string} folderName
+     * @returns {string} concatenated path
+     */
+    function ensureFolderPath(parentFolderPath, folderName) {
+        var folderPath = concatFilepath(parentFolderPath, folderName);
+        if (!fs.existsSync(folderPath)) {
+            fs.mkdirSync(folderPath);
+        }
+        return folderPath;
     }
 
     function concatFilepath(folder, fileName) {
