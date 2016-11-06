@@ -105,6 +105,24 @@ function MqttImageSubscriber(config) {
         var fileName = padNumber(date.getHours()) + "_" + padNumber(date.getMinutes()) + "_" + padNumber(date.getSeconds()) + "." + data.ext;
         var targetFilePath = concatFilepath(targetFolderPath, fileName);
         fs.writeFile(targetFilePath, data.buffer);
+
+        //keep one file in the camera folder
+        keepLatestInTopFolder(cameraFolderPath, fileName, data.buffer);
+    }
+
+    function keepLatestInTopFolder(cameraFolderPath, fileName, dataBuffer) {
+        var latestFilePath = concatFilepath(cameraFolderPath, fileName);
+        fs.writeFile(latestFilePath, dataBuffer, function (err) {
+            if (err) return console.log(err);
+            var latestFileStorage = concatFilepath(cameraFolderPath, "latestFileName");
+
+            //remove the old file and store the name of the new file
+            fs.readFile(latestFileStorage, function (readErr, oldLatestFile) {
+                if (err) return console.log(readErr);
+                fs.unlink(oldLatestFile);
+                fs.writeFileSync(latestFileStorage, latestFilePath);
+            });
+        });
     }
 
     /**
@@ -142,6 +160,8 @@ function padNumber(nmbr) {
     }
 }
 
-String.prototype.endsWith = function (suffix) {
-    return this.indexOf(suffix, this.length - suffix.length) !== -1;
-};
+if (typeof (String.endsWith) === undefined) {
+    String.prototype.endsWith = function (suffix) {
+        return this.indexOf(suffix, this.length - suffix.length) !== -1;
+    };
+}
