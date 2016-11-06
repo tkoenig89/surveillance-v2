@@ -119,7 +119,9 @@ function MqttImageSubscriber(config) {
             //remove the old file and store the name of the new file
             fs.readFile(latestFileStorage, function (readErr, oldLatestFile) {
                 if (err) return console.log(readErr);
-                fs.unlink(oldLatestFile);
+                if (oldLatestFile) {
+                    fs.unlink(oldLatestFile);
+                }
                 fs.writeFileSync(latestFileStorage, latestFilePath);
             });
         });
