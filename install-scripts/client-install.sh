@@ -1,6 +1,6 @@
 SOURCE_ROOT=../
-TARGET_LOCATION=/usr/surveilance
-TARGET_CFG_LOCATION=/etc/surveilance
+TARGET_LOCATION=/usr/surveillance
+TARGET_CFG_LOCATION=/etc/surveillance
 IMAGE_BASEFOLDER=/mnt/usb/images
 CURRENT_DIR=$PWD
 

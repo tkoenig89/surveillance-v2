@@ -1,5 +1,5 @@
 SOURCE_ROOT=../
-TARGET_LOCATION=/usr/surveilance
+TARGET_LOCATION=/usr/surveillance
 CURRENT_DIR=$PWD
 
 #update application
