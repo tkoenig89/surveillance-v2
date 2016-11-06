@@ -59,14 +59,27 @@ function MqttImageSubscriber(config) {
 
     function onMessage(topic, messageBuffer) {
         var data = msgHandler.parseMessage(messageBuffer);
-        var topicSplit = topic.split("/");
-        data.cameraName = topicSplit[topicSplit.length - 1];
+        data.cameraName = cameraNameFromTopic(topic);
         storeImage(data);
     }
 
     function onConnect(connack) {
         if (!connack.sessionPresent) {
             client.subscribe(config.server.subscribe_topic, { qos: config.server.subscribe_qos });
+        }
+    }
+
+    /**
+     * Extracts the name of the sending camera from the topic
+     * @param {string} topic
+     * @returns {string}
+     */
+    function cameraNameFromTopic(topic) {
+        var topicSplit = topic.split("/");
+        if (topicSplit.length >= 2) {
+            return topicSplit[topicSplit.length - 2];
+        } else {
+            return "unknwon";
         }
     }
 

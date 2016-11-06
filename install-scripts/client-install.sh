@@ -27,3 +27,5 @@ cp -r $SOURCE_ROOT/app/camclient $SOURCE_ROOT/app/core $SOURCE_ROOT/app/maintena
 cd $TARGET_LOCATION
 npm install
 cd $CURRENT_DIR
+
+sudo node $TARGET_LOCATION/maintenance/cron.js $TARGET_CFG_LOCATION/config.json
