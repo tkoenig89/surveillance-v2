@@ -117,7 +117,7 @@ function MqttImageSubscriber(config) {
             var latestFileStorage = concatFilepath(cameraFolderPath, "latestFileName");
 
             //remove the old file and store the name of the new file
-            fs.readFile(latestFileStorage, function (readErr, oldLatestFile) {
+            fs.readFile(latestFileStorage, "utf8", function (readErr, oldLatestFile) {
                 if (err) return console.log(readErr);
                 if (oldLatestFile) {
                     fs.unlink(oldLatestFile);
