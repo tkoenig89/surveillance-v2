@@ -17,7 +17,7 @@ mqttImageSubscriber.start();
  */
 function MqttImageSubscriber(config) {
     var client;
-
+    var latestFiles = {};
     this.start = start;
 
     function start() {
@@ -83,9 +83,7 @@ function MqttImageSubscriber(config) {
         }
     }
 
-    function onError(err) {
-
-    }
+    function onError(err) { }
 
     /**
      * 
@@ -98,32 +96,29 @@ function MqttImageSubscriber(config) {
         var cameraFolderPath = ensureFolderPath(config.server.imageLocation, data.cameraName);
 
         //create date folder path
-        var folderName = "" + date.getFullYear() + padNumber(date.getMonth() + 1) + padNumber(date.getDate());
-        var targetFolderPath = ensureFolderPath(cameraFolderPath, folderName);
+        var dateFolderName = "" + date.getFullYear() + padNumber(date.getMonth() + 1) + padNumber(date.getDate());
+        var targetFolderPath = ensureFolderPath(cameraFolderPath, dateFolderName);
 
         //create file path
-        var fileName = padNumber(date.getHours()) + "_" + padNumber(date.getMinutes()) + "_" + padNumber(date.getSeconds()) + "." + data.ext;
-        var targetFilePath = concatFilepath(targetFolderPath, fileName);
+        var timeFileName = padNumber(date.getHours()) + "_" + padNumber(date.getMinutes()) + "_" + padNumber(date.getSeconds()) + "." + data.ext;
+        var targetFilePath = concatFilepath(targetFolderPath, timeFileName);
         fs.writeFile(targetFilePath, data.buffer);
 
         //keep one file in the camera folder
-        keepLatestInTopFolder(cameraFolderPath, fileName, data.buffer);
+        keepLatestInTopFolder(cameraFolderPath, dateFolderName + "_" + timeFileName, data);
     }
 
-    function keepLatestInTopFolder(cameraFolderPath, fileName, dataBuffer) {
-        var latestFilePath = concatFilepath(cameraFolderPath, fileName);
-        fs.writeFile(latestFilePath, dataBuffer, function (err) {
-            if (err) return console.log(err);
-            var latestFileStorage = concatFilepath(cameraFolderPath, "latestFileName");
+    function keepLatestInTopFolder(cameraFolderPath, fileName, data) {
+        var oldLatestFile = latestFiles[data.cameraName];
+        //remove old file
+        if (oldLatestFile) {
+            fs.unlink(oldLatestFile);
+        }
 
-            //remove the old file and store the name of the new file
-            fs.readFile(latestFileStorage, "utf8", function (readErr, oldLatestFile) {
-                if (err) return console.log(readErr);
-                if (oldLatestFile) {
-                    fs.unlink(oldLatestFile);
-                }
-                fs.writeFileSync(latestFileStorage, latestFilePath);
-            });
+        var latestFilePath = concatFilepath(cameraFolderPath, fileName);
+        fs.writeFile(latestFilePath, data.buffer, function (err) {
+            if (err) return console.log(err);
+            latestFiles[data.cameraName] = latestFilePath;
         });
     }
 
